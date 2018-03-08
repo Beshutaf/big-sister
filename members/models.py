@@ -25,13 +25,13 @@ class Status(Enum):
 class Member(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE, null=True)
     address = models.CharField(_('physical address'), max_length=200, null=True)
-    phone_number = PhoneNumberField(_('phone number'), null=True),
+    phone_number = PhoneNumberField(_('phone number'), null=True)
     gender = EnumField(Gender, max_length=1, name=_('gender'), null=True)
     status = EnumField(Status, max_length=1, name=_('status'), default=Status.ACTIVE)
     join_date = models.DateTimeField(_('date joined'), null=True)
     change_date = models.DateTimeField(_('date of last status update'), null=True)
     birth_date = models.DateTimeField(_('birth date'), null=True)
-    joint_share_with = models.ForeignKey("Member", on_delete=models.SET_NULL, null=True)
+    joint_share_with = models.ForeignKey("Member", on_delete=models.SET_NULL, null=True, related_name="joint_share")
     neighborhood = models.CharField(_('neighborhood'), max_length=200, null=True)
     student = models.CharField(_('student status and degree'), max_length=200, null=True)
     age_group = models.CharField(_('age group'), max_length=200, null=True)
@@ -56,7 +56,9 @@ class Member(models.Model):
                 continue
             user.first_name = first_name
             user.last_name = last_name
-            user.member.phone_number = phone_number
+            if phone_number.startswith("0"):
+                phone_number = "+972" + phone_number[1:]
+            user.member.phone_number = phone_number.replace("-", "")
             user.member.gender = {"אדון": Gender.MALE, "גברת": Gender.FEMALE}.get(gender, Gender.OTHER)
             user.member.status = status
             user.save()

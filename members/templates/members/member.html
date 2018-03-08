@@ -1,0 +1,8 @@
+<tr>
+    <th scope="row">{{member.id}}</th>
+    <td><a href="{% url 'detail' member.id %}">{{member.user.get_full_name}}</a></td>
+    <td>{{member.gender}}</td>
+    <td dir="ltr">{{member.phone_number.as_e164}}</td>
+    <td dir="ltr">{{member.user.email}}</td>
+    <td>{{member.status}}</td>
+</tr>

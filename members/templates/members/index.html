@@ -1,16 +1,13 @@
-{% load i18n %}
+{% include "bigsister/index.html" %}
 <div dir="rtl">
     {% if member_list %}
-        <table>
-            <tr><th>שם</th><th>מגדר</th><th>טלפון</th><th>כתובת מייל</th></tr>
+        <table class="table">
+            {% include "members/header.html" %}
+            <tbody>
             {% for member in member_list %}
-                <tr>
-                    <td><a href="{% url 'detail' member.id %}">{{member.user.get_full_name}}</a></td>
-                    <td>{% trans member.gender.name %}</td>
-                    <td>{{member.phone_number}}</td>
-                    <td>{{member.user.email}}</td>
-                </tr>
+                {% include "members/member.html" %}
             {% endfor %}
+            </tbody>
         </table>
     {% else %}
         <p>אין חברים.</p>
