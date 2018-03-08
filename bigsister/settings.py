@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'phonenumber_field',
+    'mama_cas',
 ]
 
 MIDDLEWARE = [
@@ -124,3 +125,24 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/2.0/howto/static-files/
 
 STATIC_URL = '/static/'
+
+MAMA_CAS_ENABLE_SINGLE_SIGN_OUT = True
+
+MAMA_CAS_SERVICES = [
+    {
+        'SERVICE': 'http://127.0.1.1:8000',
+        'CALLBACKS': [
+            'mama_cas.callbacks.user_name_attributes',
+        ],
+        'LOGOUT_ALLOW': True,
+        'LOGOUT_URL': 'http://127.0.1.1:8000/accounts/callback',
+    },
+    {
+        'SERVICE': 'http://127.0.2.1:8000',
+        'CALLBACKS': [
+            'mama_cas.callbacks.user_name_attributes',
+        ],
+        'LOGOUT_ALLOW': True,
+        'LOGOUT_URL': 'http://127.0.2.1:8000/accounts/callback',
+    },
+ ]
